@@ -1,4 +1,4 @@
-import os
+import os, pygame
 from threading import Thread
 
 data = [0, 0, 0]
@@ -6,6 +6,8 @@ clock = 0
 width = 1600
 height = 900
 sep = os.path.sep
+points = 0
+time_remaining = 27
 
 def map(x, in_min, in_max, out_min, out_max):
     """
@@ -23,6 +25,59 @@ def map(x, in_min, in_max, out_min, out_max):
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
 def run_in_thread(func):
+    """
+    This function is used to run a function
+    fun in a separate thread.
+    - func: The function to run in a different thread.
+    """
     thread = Thread(target=func)
     thread.daemon = True
     thread.start()
+
+def draw_text(screen, text, X, Y):
+    """
+    This function draws any text to the screen.
+    - screen: pygame.displayto draw to.
+    - text: string of the text to draw.
+    - X: x coordinate of the center of the text.
+    - Y: y coordinate of the center of the text.
+    """
+    font = pygame.font.Font("fonts/dpcomic/dpcomic.ttf", 100)
+    text_img = font.render(text, True, (255, 0, 0))
+    text_rect = text_img.get_rect()
+    text_rect.center = (X, Y)
+    screen.blit(text_img, text_rect)
+
+def draw_number_counter(screen, number):
+    """
+    This function draws the remaining time to
+    complete an action.
+    - screen: pygame.display to draw to.
+    - number: int of time remaining.
+    """
+    X = int(width / 2)
+    Y = 200
+    draw_text(screen, str(number), X, Y)
+
+def draw_points(screen):
+    """
+    This function draws the points scored by the user
+    during the game.
+    - screen: pygame.display to draw to.
+    """
+    X = width - 200
+    Y = 50
+    draw_text(screen, "Points: {}".format(points), X, Y)
+
+def draw_time(screen, time):
+    """
+    This function draws the remaining game time.
+    - screen: pygame.display to draw to.
+    - time: int of time remaining.
+    """
+    if time == 10:
+        X = 390
+    else:
+        X = 370
+    Y = 50
+    draw_text(screen, "Time remaining: {}s".format(time), X, Y)

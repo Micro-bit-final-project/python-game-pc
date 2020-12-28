@@ -4,9 +4,11 @@ import sys
 import os
 import utils
 import microbit_serial as ubit
+from random import randint
 
 # Minigames
 import wheelie
+minigames = [wheelie.wheelie_game]
 
 # Init pygame
 pygame.init()
@@ -34,7 +36,14 @@ def get_data():
 
 
 def game():
-    wheelie.wheelie_game(screen, get_data)
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+        utils.time_remaining = 27
+        minigame = minigames[randint(0, len(minigames) - 1)]
+        minigame(screen, get_data)
 
 
 def menu():
