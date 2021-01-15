@@ -55,6 +55,7 @@ def wheelie_game(screen, get_data):
     # Game
     seconds_counter = time.time()
     mathcing_time_remaining = 3
+    utils.text_colour = (255, 0, 0)
     while True:
         if time.time() - seconds_counter > 1:
             utils.time_remaining -= 1

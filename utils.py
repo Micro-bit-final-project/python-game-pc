@@ -8,6 +8,7 @@ height = 900
 sep = os.path.sep
 points = 0
 time_remaining = 27
+text_colour = (0, 0, 0)
 
 def map(x, in_min, in_max, out_min, out_max):
     """
@@ -43,7 +44,7 @@ def draw_text(screen, text, X, Y):
     - Y: y coordinate of the center of the text.
     """
     font = pygame.font.Font("fonts/dpcomic/dpcomic.ttf", 100)
-    text_img = font.render(text, True, (255, 0, 0))
+    text_img = font.render(text, True, text_colour)
     text_rect = text_img.get_rect()
     text_rect.center = (X, Y)
     screen.blit(text_img, text_rect)
