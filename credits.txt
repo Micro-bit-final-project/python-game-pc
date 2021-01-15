@@ -1,6 +1,9 @@
 Main font - http://www.zone38.net/font/ (look for "dpcomic")
+Win sound - https://opengameart.org/users/fupi
+Lose sound - https://opengameart.org/users/little-robot-sound-factory
 Bike sprites (Wheelie minigame) - https://opengameart.org/users/chasersgaming
 Wheelie minigame background - https://opengameart.org/users/bevouliincom / http://bevouliin.com
 Car sprite (Engine minigame) - https://opengameart.org/users/chasersgaming
 Engine minigame background - https://opengameart.org/users/ansimuz
 Engine minigame smoke - https://opengameart.org/users/knoblepersona
+Engine minigame soundtrack - https://opengameart.org/users/deltabreaker

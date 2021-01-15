@@ -9,6 +9,8 @@ sep = os.path.sep
 points = 0
 time_remaining = 27
 text_colour = (0, 0, 0)
+win_sound = 0
+lose_sound = 0
 
 def map(x, in_min, in_max, out_min, out_max):
     """

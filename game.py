@@ -16,6 +16,8 @@ pygame.init()
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode((utils.width, utils.height))
 utils.clock = pygame.time.Clock()
+utils.win_sound =  pygame.mixer.Sound("sounds" + utils.sep + "win.ogg")
+utils.lose_sound = pygame.mixer.Sound("sounds" + utils.sep + "lose.ogg")
 
 # Connect to the microbit
 port = ubit.connect()
