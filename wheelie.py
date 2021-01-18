@@ -103,25 +103,7 @@ def wheelie_game(screen, get_data):
             pygame.display.flip()
             utils.clock.tick(60)
         else:
-            screen.fill((0, 0, 0))
-            # Points
-            font = pygame.font.Font("fonts/dpcomic/dpcomic.ttf", 100)
-            points_img = font.render("Points scored: {}".format(utils.points), True, (255, 255, 255))
-            points_rect = points_img.get_rect()
-            X = int(utils.width / 2)
-            Y = int(utils.height / 5)
-            points_rect.center = (X, Y)
-            # Continue
-            font = pygame.font.Font("fonts/dpcomic/dpcomic.ttf", 100)
-            continue_img = font.render("Press any button to continue".format(utils.points), True, (255, 255, 255))
-            continue_rect = continue_img.get_rect()
-            X = int(utils.width / 2)
-            Y = utils.height - int(utils.height / 5)
-            continue_rect.center = (X, Y)
-            # Draw
-            screen.blit(points_img, points_rect)
-            screen.blit(continue_img, continue_rect)
-            pygame.display.flip()
+            utils.minigame_end(screen)
 
             while True:
                 get_data()

@@ -1,4 +1,5 @@
-import os, pygame
+import os
+import pygame
 from threading import Thread
 
 data = [0, 0, 0]
@@ -11,6 +12,7 @@ time_remaining = 27
 text_colour = (0, 0, 0)
 win_sound = 0
 lose_sound = 0
+
 
 def map(x, in_min, in_max, out_min, out_max):
     """
@@ -27,6 +29,7 @@ def map(x, in_min, in_max, out_min, out_max):
     """
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
+
 def run_in_thread(func):
     """
     This function is used to run a function
@@ -36,6 +39,7 @@ def run_in_thread(func):
     thread = Thread(target=func)
     thread.daemon = True
     thread.start()
+
 
 def draw_text(screen, text, X, Y):
     """
@@ -51,6 +55,7 @@ def draw_text(screen, text, X, Y):
     text_rect.center = (X, Y)
     screen.blit(text_img, text_rect)
 
+
 def draw_number_counter(screen, number):
     """
     This function draws the remaining time to
@@ -62,6 +67,7 @@ def draw_number_counter(screen, number):
     Y = 200
     draw_text(screen, str(number), X, Y)
 
+
 def draw_points(screen):
     """
     This function draws the points scored by the user
@@ -71,6 +77,7 @@ def draw_points(screen):
     X = width - 200
     Y = 50
     draw_text(screen, "Points: {}".format(points), X, Y)
+
 
 def draw_time(screen, time):
     """
@@ -84,3 +91,30 @@ def draw_time(screen, time):
         X = 370
     Y = 50
     draw_text(screen, "Time remaining: {}s".format(time), X, Y)
+
+
+def minigame_end(screen):
+    """
+    This function is called to display the recap screen
+    after each minigame.
+    - screen: pygame.display to draw to.
+    """
+    screen.fill((0, 0, 0))
+    # Points
+    font = pygame.font.Font("fonts/dpcomic/dpcomic.ttf", 100)
+    points_img = font.render("Points scored: {}".format(points), True, (255, 255, 255))
+    points_rect = points_img.get_rect()
+    X = int(width / 2)
+    Y = int(height / 5)
+    points_rect.center = (X, Y)
+    # Continue
+    font = pygame.font.Font("fonts/dpcomic/dpcomic.ttf", 100)
+    continue_img = font.render("Press any button to continue", True, (255, 255, 255))
+    continue_rect = continue_img.get_rect()
+    X = int(width / 2)
+    Y = height - int(height / 5)
+    continue_rect.center = (X, Y)
+    # Draw
+    screen.blit(points_img, points_rect)
+    screen.blit(continue_img, continue_rect)
+    pygame.display.flip()

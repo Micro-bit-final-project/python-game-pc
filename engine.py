@@ -7,23 +7,35 @@ Y = 0
 car = 0
 background = 0
 
-def win_animation(screen):
+def end_anim(screen, win):
+    """
+    This function handles the final animation of a game.
+    - screen: pygame.display to draw to.
+    - win: Whether or not the user won. Play a sound and
+           display an image accordingly.
+    """
     global X
     global Y
     global car
     global background
 
-    win = pygame.image.load("engine_files" + utils.sep + "win.png").convert_alpha()
+    if win:
+        img = pygame.image.load("engine_files" + utils.sep + "win.png").convert_alpha()
+    else:
+        img = pygame.image.load("engine_files" + utils.sep + "lose.png").convert_alpha()
 
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
     screen.blit(car, (X, Y))
-    win_rect = win.get_rect()
-    win_rect.center = (utils.width / 2, utils.height/2)
-    screen.blit(win, win_rect)
+    img_rect = img.get_rect()
+    img_rect.center = (utils.width / 2, utils.height/2)
+    screen.blit(img, img_rect)
 
-    # Win sound
-    pygame.mixer.Sound.play(utils.win_sound)
+    # Sound
+    if win:
+        pygame.mixer.Sound.play(utils.win_sound)
+    else:
+        pygame.mixer.Sound.play(utils.lose_sound)
 
     # Info
     utils.draw_points(screen)
@@ -35,7 +47,7 @@ def win_animation(screen):
 def engine_game(screen, get_data):
     """
     This function handles the 'wheelie' minigame.
-    - screen: pygame screen.
+    - screen: pygame.display to draw to.
     - get_data: get_data function to retrieve data
                 from the microbit.
     """
@@ -80,7 +92,7 @@ def engine_game(screen, get_data):
 
         if stage == 5:
             pygame.mixer.music.stop()
-            win_animation(screen)
+            end_anim(screen, True)
             utils.time_remaining = 0 # Make sure the game stops
 
         if time.time() - seconds_counter > 1:
@@ -120,32 +132,18 @@ def engine_game(screen, get_data):
             indicator_sprites.update()
 
             # Info
+            utils.draw_text(screen, "Blow on the fan!", utils.width / 2, 322)
             utils.draw_points(screen)
             utils.draw_time(screen, utils.time_remaining)
 
             pygame.display.flip()
             utils.clock.tick(60)
         else:
+            if stage < 5:
+                end_anim(screen, False)
+
             pygame.mixer.music.stop()
-            screen.fill((0, 0, 0))
-            # Points
-            font = pygame.font.Font("fonts/dpcomic/dpcomic.ttf", 100)
-            points_img = font.render("Points scored: {}".format(utils.points), True, (255, 255, 255))
-            points_rect = points_img.get_rect()
-            X = int(utils.width / 2)
-            Y = int(utils.height / 5)
-            points_rect.center = (X, Y)
-            # Continue
-            font = pygame.font.Font("fonts/dpcomic/dpcomic.ttf", 100)
-            continue_img = font.render("Press any button to continue".format(utils.points), True, (255, 255, 255))
-            continue_rect = continue_img.get_rect()
-            X = int(utils.width / 2)
-            Y = utils.height - int(utils.height / 5)
-            continue_rect.center = (X, Y)
-            # Draw
-            screen.blit(points_img, points_rect)
-            screen.blit(continue_img, continue_rect)
-            pygame.display.flip()
+            utils.minigame_end(screen)
 
             while True:
                 get_data()
