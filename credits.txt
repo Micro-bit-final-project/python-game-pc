@@ -1,4 +1,5 @@
 Main font - http://www.zone38.net/font/ (look for "dpcomic")
+Setup checkmark - https://www.kenney.nl/assets/game-icons
 Win sound - https://opengameart.org/users/fupi
 Lose sound - https://opengameart.org/users/little-robot-sound-factory
 Bike sprites (Wheelie minigame) - https://opengameart.org/users/chasersgaming

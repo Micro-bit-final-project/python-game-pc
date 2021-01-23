@@ -4,6 +4,7 @@ import sys
 import os
 import utils
 import microbit_serial as ubit
+import connection_files.checkmark
 from random import randint
 
 # Minigames
@@ -18,14 +19,54 @@ screen = pygame.display.set_mode((utils.width, utils.height))
 utils.clock = pygame.time.Clock()
 utils.win_sound =  pygame.mixer.Sound("sounds" + utils.sep + "win.ogg")
 utils.lose_sound = pygame.mixer.Sound("sounds" + utils.sep + "lose.ogg")
+utils.text_colour = (255, 255, 255)
+
+def connect_notice(status):
+    """
+    This function displays information about
+    the microbit connection status before the
+    game starts.
+    status - Boolean value, true if connected.
+    """
+    screen.fill((0, 0, 0))
+    microbit_img = pygame.image.load("connection_files" + utils.sep + "microbit.png").convert_alpha()
+    microbit_rect = microbit_img.get_rect()
+    microbit_rect.center = (utils.width / 2, utils.height / 2)
+    screen.blit(microbit_img, microbit_rect)
+    if status == False:
+        utils.draw_text(screen, "Please connect a microbit controller", utils.width / 2, utils.height - (utils.height / 5))
+        pygame.display.flip()
+    else:
+        # Init checkmark sprite
+        checkmark = connection_files.checkmark.Checkmark()
+        checkmark_sprites = pygame.sprite.Group()
+        checkmark_sprites.add(checkmark)
+        while utils.done_setup == False:
+            checkmark.animate()
+            checkmark_sprites.update()
+            checkmark_sprites.draw(screen)
+            pygame.display.flip()
+            utils.clock.tick(60)
+        pygame.time.wait(1500)
+
 
 # Connect to the microbit
 port = ubit.connect()
+run_notice = False
 while type(port) is not serial.Serial:
     print("Looking for a microbit")
+    run_notice = True
     port = ubit.connect()
+    connect_notice(False)
+    for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
 
 print("Microbit Found")
+if run_notice == True:
+    connect_notice(True)
+
 port.open()
 
 def get_data():
@@ -53,13 +94,8 @@ def menu():
     """
     This function handles the game menu.
     """
-    font = pygame.font.Font("fonts/dpcomic/dpcomic.ttf", 100)
-    press_btn_img = font.render("Press any button to start the game", True, (255, 255, 255))
-    press_btn_rect = press_btn_img.get_rect()
-    X = int(utils.width / 2)
-    Y = utils.height - int(utils.height / 5)
-    press_btn_rect.center = (X, Y)
-    screen.blit(press_btn_img, press_btn_rect)
+    screen.fill((0, 0, 0))
+    utils.draw_text(screen, "Press any button to start the game", utils.width / 2, utils.height - utils.height / 5)
     pygame.display.flip()
 
 if __name__ == "__main__":
