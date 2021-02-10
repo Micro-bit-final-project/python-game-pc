@@ -10,7 +10,8 @@ from random import randint
 # Minigames
 import wheelie
 import engine
-minigames = [wheelie.wheelie_game, engine.engine_game]
+import coin
+minigames = [wheelie.wheelie_game, engine.engine_game, coin.coin_game]
 
 # Init pygame
 pygame.init()

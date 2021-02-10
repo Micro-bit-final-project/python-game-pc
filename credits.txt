@@ -8,3 +8,5 @@ Car sprite (Engine minigame) - https://opengameart.org/users/chasersgaming
 Engine minigame background - https://opengameart.org/users/ansimuz
 Engine minigame smoke - https://opengameart.org/users/knoblepersona
 Engine minigame soundtrack - https://opengameart.org/users/deltabreaker
+Coin minigame bowl - https://opengameart.org/users/antumdeluge
+Coin minigame coins - https://opengameart.org/users/puddin
