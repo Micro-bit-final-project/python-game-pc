@@ -19,13 +19,12 @@ def end_anim(screen, win):
     global background
 
     if win:
-        img = pygame.image.load("engine_files" + utils.sep + "win.png").convert_alpha()
+        img = pygame.image.load("coin_files" + utils.sep + "win.png").convert_alpha()
     else:
-        img = pygame.image.load("engine_files" + utils.sep + "lose.png").convert_alpha()
+        img = pygame.image.load("coin_files" + utils.sep + "lose.png").convert_alpha()
 
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
-    screen.blit(car, (X, Y))
     img_rect = img.get_rect()
     img_rect.center = (utils.width / 2, utils.height/2)
     screen.blit(img, img_rect)
@@ -62,10 +61,8 @@ def coin_game(screen, get_data):
     bucket_sprite = pygame.image.load("coin_files" + utils.sep + "bucket.png").convert_alpha()
 
     # Main sprite's coordinates
-    #X = (utils.width / 2) - (320 / 2) # 320 is the sprite's width
-    #Y = utils.height - 20 - 320 # 320 is the sprite's height, just an example
     X = utils.width / 2
-    Y = utils.height - (320 / 2) - 20
+    Y = utils.height - (320 / 2) - 20 # 320 is the sprite's height
 
 
     # Init coin sprite
@@ -74,19 +71,18 @@ def coin_game(screen, get_data):
     coin_sprite_g.add(coin_sprite)
 
     # Load backgound image
-    #background = pygame.image.load("template-minigame_files" + utils.sep + "background.png").convert_alpha()
+    background = pygame.image.load("coin_files" + utils.sep + "background.png").convert_alpha()
 
     # Game
-    #pygame.mixer.music.load("template-minigame_files" + utils.sep + "music.ogg")
-    #pygame.mixer.music.play(1) # Do not loop the song, play it once. -1 to play in a loop if you ever need it.
+    pygame.mixer.music.load("coin_files" + utils.sep + "music.ogg")
+    pygame.mixer.music.play(1) # Do not loop the song, play it once. -1 to play in a loop if you ever need it.
     seconds_counter = time.time()
-    utils.text_colour = (255, 255, 255) # Set the text colour for the minigame
+    utils.text_colour = (200, 89, 78) # Set the text colour for the minigame
     while True:
-        print(points_counter)
         # Game logic
-        if points_counter == 2: # winning condition
-            #pygame.mixer.music.stop()
-            #end_anim(screen, True)
+        if utils.points - points_counter == 5: # winning condition
+            pygame.mixer.music.stop()
+            end_anim(screen, True)
             utils.time_remaining = 0 # Make sure the game stops
 
         if time.time() - seconds_counter > 1:
@@ -101,15 +97,7 @@ def coin_game(screen, get_data):
                     sys.exit()
             screen.fill((0, 0, 0))
 
-            # Microbit input here. Manipulate the data
-            # as per minigame's needs. The data comes in
-            # an array stored in the utils.data variable.
-            # Example of data manipulation (from engine minigame):
-
-            # Map the data coming from the microbit to a
-            # scale of 0 to 100.
-            # If the engine is not spinning, the pin is floating
-            # due to the diode protection. Might need adjustement.
+            # Check what button has been pressed
             if utils.data[0] == 2: # Left
                 X -= 5
             elif utils.data[0] == 4: # Right
@@ -120,24 +108,23 @@ def coin_game(screen, get_data):
             # Coin animation
             coin_sprite.animate(bucket_rect)
 
-            #screen.blit(background, (0, 0))
+            screen.blit(background, (0, 0))
             coin_sprite_g.draw(screen)
             screen.blit(bucket_sprite, bucket_rect)
             coin_sprite_g.update()
 
             # Info
-            utils.draw_text(screen, "R and L buttons", utils.width / 2, 322)
+            utils.draw_text(screen, "R and L buttons to move", utils.width / 2, 222)
             utils.draw_points(screen)
             utils.draw_time(screen, utils.time_remaining)
 
-            points_counter = utils.points - points_counter
             pygame.display.flip()
             utils.clock.tick(60)
         else:
-            #if points < 5: # If true, the user lost
-            #    end_anim(screen, False)
+            if utils.points - points_counter < 5: # If true, the user lost
+                pygame.mixer.music.stop()
+                end_anim(screen, False)
 
-            #pygame.mixer.music.stop()
             utils.minigame_end(screen)
 
             while True:

@@ -28,10 +28,13 @@ class Coin(pygame.sprite.Sprite):
         self.stage = 0
         self.image = self.sprites[self.stage]
         # Coordinates, change as needed
-        self.X = utils.width / 2
+        self.X = randint(50, utils.width - 50)
         self.Y = -320 / 2 # 320 is the sprite's height
         self.rect = self.image.get_rect(center=(self.X, self.Y))
         self.bucket_rect = 0
+
+        # Sound effect
+        self.coin_sound = pygame.mixer.Sound(path + "coin.ogg")
 
     def animate(self, bucket_rect):
         """
@@ -50,9 +53,10 @@ class Coin(pygame.sprite.Sprite):
         """
         self.image = self.sprites[int(self.stage)]
 
-        self.Y += 2.5
+        self.Y += 3.5
         self.rect = self.image.get_rect(center=(self.X, self.Y))
         if self.rect.colliderect(self.bucket_rect) == True:
+            pygame.mixer.Sound.play(self.coin_sound)
             self.Y = -320 / 2 # 320 is the sprite's height
             self.X = randint(50, utils.width - 50)
             utils.points += 1
