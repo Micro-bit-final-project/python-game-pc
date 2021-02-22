@@ -101,6 +101,9 @@ def minigame_end(screen):
     after each minigame.
     - screen: pygame.display to draw to.
     """
+    # Reset time
+    time_remaining = 27
+
     screen.fill((0, 0, 0))
     # Points
     font = pygame.font.Font("fonts/dpcomic/dpcomic.ttf", 100)

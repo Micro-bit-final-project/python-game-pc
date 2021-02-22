@@ -12,7 +12,8 @@ from random import randint
 import wheelie
 import engine
 import coin
-minigames = [wheelie.wheelie_game, engine.engine_game, coin.coin_game]
+import overcoock
+minigames = [wheelie.wheelie_game, engine.engine_game, coin.coin_game, overcoock.overcoock_game]
 
 # Init pygame
 pygame.init()
