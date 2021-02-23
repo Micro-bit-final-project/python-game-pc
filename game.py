@@ -13,7 +13,9 @@ import wheelie
 import engine
 import coin
 import overcoock
-minigames = [wheelie.wheelie_game, engine.engine_game, coin.coin_game, overcoock.overcoock_game]
+import match
+
+minigames = [wheelie.wheelie_game, engine.engine_game, coin.coin_game, overcoock.overcoock_game, match.match_game]
 
 # Init pygame
 pygame.init()
@@ -127,6 +129,8 @@ def menu():
         elif utils.data[0] == 3 and selected_option < 1:
             selected_option += 1
         elif utils.data[0] == 2 or utils.data[0] == 4:
+            utils.run_in_thread(get_data)
+            utils.data[0] = 0 # Clean to avoid interferance with games
             break # TODO: Implement credits screen
         print(utils.data)
         screen.fill((0, 0, 0))
