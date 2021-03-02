@@ -1,6 +1,7 @@
 import os
 import pygame
 from threading import Thread
+import sys
 
 data = [0, 0, 0]
 clock = 0
@@ -31,6 +32,25 @@ def map(x, in_min, in_max, out_min, out_max):
     """
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
+def check_data_integrity(screen):
+    """
+    This functions makes sure that the microbit has not been disconnected.
+    All the items in the array have a value of -1 if the connection is lost.
+    In case it is, the user needs to restart the game.
+
+    - screen: The screen to draw directions on.
+    """
+    if data[0] == -1:
+        screen.fill((0, 0, 0))
+        text_colour = (255, 255, 255)
+        draw_text(screen, "Controller disconnected", width / 2, height / 2)
+        draw_text(screen, "Please restart the game", width / 2, (height / 2) + 200)
+        pygame.display.flip()
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
 
 def run_in_thread(func):
     """

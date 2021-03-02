@@ -75,13 +75,16 @@ if run_notice == True:
 port.open()
 
 def get_data():
-    if port.in_waiting > 0:
-        # Obtain data from the microbit
-        utils.data = ubit.data(port)
-        while type(utils.data) != list: # Make sure message is intact and wait for it to come
+    try:
+        if port.in_waiting > 0:
+            # Obtain data from the microbit
             utils.data = ubit.data(port)
-        print(utils.data)
-        port.write("Y".encode()) # Let the microbit know we received the data
+            while type(utils.data) != list: # Make sure message is intact and wait for it to come
+                utils.data = ubit.data(port)
+            print(utils.data)
+            port.write("Y".encode()) # Let the microbit know we received the data
+    except: # Controller disconnected
+        utils.data = [-1, -1, -1, -1]
 
 
 def game():
@@ -118,6 +121,7 @@ def menu():
 
     while True:
         utils.run_in_thread(get_data)
+        utils.check_data_integrity(screen)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()

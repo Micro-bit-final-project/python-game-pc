@@ -88,6 +88,7 @@ def overcoock_game(screen, get_data):
 
         if utils.time_remaining > 0:
             utils.run_in_thread(get_data)
+            utils.check_data_integrity(screen)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
