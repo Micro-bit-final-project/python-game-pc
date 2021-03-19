@@ -24,14 +24,18 @@ class Wizard(pygame.sprite.Sprite):
         self.image = self.sprites[self.stage]
         # Coordinates
         self.X = utils.width
-        self.Y = utils.height - 100 - 160 # 160 is the sprite's height
+        self.Y = utils.height - 120 # -120 makes it look good on the ground
         self.rect = self.image.get_rect(center=(self.X, self.Y))
+        
+        self.dino_rect = 0
+        self.collision = False
 
-    def animate(self):
+    def animate(self, dino_rect):
         """
         This function is called to animate
         the sprite.
         """
+        self.dino_rect = dino_rect
         self.stage += 0.15
         if self.stage > 3:
             self.stage = 0
@@ -41,7 +45,16 @@ class Wizard(pygame.sprite.Sprite):
         This function handles the sprite animation.
         """
         self.image = self.sprites[int(self.stage)]
-        self.X -= 5
+        self.X -= 7
+
         if self.X < 0:
             self.X = utils.width
+            if self.collision == False:
+                utils.points += 2
+            elif self.collision == True and utils.points >= 2:
+                utils.points -= 2
+            self.collision = False
+
         self.rect = self.image.get_rect(center=(self.X, self.Y))
+        if self.rect.colliderect(self.dino_rect) == True:
+            self.collision = True

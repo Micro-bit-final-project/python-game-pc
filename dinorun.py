@@ -24,7 +24,6 @@ def end_anim(screen, win):
 
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
-    screen.blit(car, (X, Y))
     img_rect = img.get_rect()
     img_rect.center = (utils.width / 2, utils.height/2)
     screen.blit(img, img_rect)
@@ -54,7 +53,7 @@ def dinorun_game(screen, get_data):
     global background
 
     # Initialise points variable
-    points = 0
+    points_counter = utils.points
 
     # Init dinosaur sprite
     dinosaur_sprite = dinorun_files.dino.Dino()
@@ -72,14 +71,8 @@ def dinorun_game(screen, get_data):
     pygame.mixer.music.load("dinorun_files" + utils.sep + "music.ogg")
     pygame.mixer.music.play(1) # Do not loop the song, play it once. -1 to play in a loop if you ever need it.
     seconds_counter = time.time()
-    utils.text_colour = (255, 255, 255) # Set the text colour for the minigame
+    utils.text_colour = (0, 0, 224) # Set the text colour for the minigame
     while True:
-        # Game logic
-        if points == 10: # winning condition
-            pygame.mixer.music.stop()
-            end_anim(screen, True)
-            utils.time_remaining = 0 # Make sure the game stops
-
         if time.time() - seconds_counter > 1:
             utils.time_remaining -= 1
             seconds_counter = time.time()
@@ -94,7 +87,7 @@ def dinorun_game(screen, get_data):
 
             jump = (utils.data[0] == 1)
             dinosaur_sprite.animate(jump)
-            wizard_sprite.animate()
+            wizard_sprite.animate(dinosaur_sprite.rect)
 
             screen.blit(background, (0, 0))
             dinosaur_sprite_g.draw(screen)
@@ -111,8 +104,10 @@ def dinorun_game(screen, get_data):
             utils.clock.tick(60)
         else:
             pygame.mixer.music.stop()
-            if points < 10: # If true, the user lost
+            if utils.points - points_counter < 6: # If true, the user lost
                 end_anim(screen, False)
+            else:
+                end_anim(screen, True)
 
             utils.minigame_end(screen)
 

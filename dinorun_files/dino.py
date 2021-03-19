@@ -24,7 +24,7 @@ class Dino(pygame.sprite.Sprite):
         self.image = self.sprites[self.stage]
         # Coordinates
         self.X = utils.width / 4
-        self.Y = utils.height - 100 - 160 # 160 is the sprite's height
+        self.Y = utils.height - 120 # -120 makes it look good on the ground
         self.rect = self.image.get_rect(center=(self.X, self.Y))
 
         self.jump_state = False
@@ -41,7 +41,7 @@ class Dino(pygame.sprite.Sprite):
             self.stage = 0
         if jump == True:
             if self.jump_state == False:
-                self.jump_progression += 1
+                self.jump_progression += 15
                 self.jump_state = True
 
         if self.jump_state == True:
@@ -49,11 +49,17 @@ class Dino(pygame.sprite.Sprite):
                 self.jump_progression += 15
             else:
                 self.jump_going_down = True
-                self.jump_progression -= 5
+                self.jump_progression -= 3
                 if self.jump_progression < 0:
                     self.jump_progression = 0
                     self.jump_state = False
                     self.jump_going_down = False
+
+    def return_rect(self):
+        """
+        This function returns the wizards' rect.
+        """
+        return self.rect
 
     def update(self):
         """
