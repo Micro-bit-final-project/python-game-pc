@@ -16,7 +16,8 @@ import overcoock
 import match
 import dinorun
 
-minigames = [wheelie.wheelie_game, engine.engine_game, coin.coin_game, overcoock.overcoock_game, match.match_game]
+#minigames = [wheelie.wheelie_game, engine.engine_game, coin.coin_game, overcoock.overcoock_game, match.match_game]
+minigames = [engine.engine_game, coin.coin_game, overcoock.overcoock_game, match.match_game]
 
 # Init pygame
 pygame.init()
@@ -80,10 +81,14 @@ def get_data():
         if port.in_waiting > 0:
             # Obtain data from the microbit
             utils.data = ubit.data(port)
-            while type(utils.data) != list: # Make sure message is intact and wait for it to come
-                utils.data = ubit.data(port)
-            print(utils.data)
-            port.write("Y".encode()) # Let the microbit know we received the data
+            if utils.data is not False:
+                while type(utils.data) != list: # Make sure message is intact and wait for it to come
+                    utils.data = ubit.data(port)
+                print(utils.data)
+                port.write("Y".encode()) # Let the microbit know we received the data
+            else:
+                port.write("Y".encode()) # Sync again
+                utils.ignore_data()
     except: # Controller disconnected
         utils.data = [-1, -1, -1, -1]
 
@@ -96,7 +101,12 @@ def game():
                 sys.exit()
         utils.time_remaining = 27
         minigame = minigames[randint(0, len(minigames) - 1)]
-        minigame(screen, get_data)
+        minigame(screen, get_data, port)
+        if (utils.lives == 0):
+            # Tell the microbit to give the user 4 lives
+            port.write("F".encode())
+            utils.lives = 4
+            break
 
 
 def menu():
@@ -172,14 +182,7 @@ def menu():
 
 if __name__ == "__main__":
     port.write("Y".encode()) # Sync microbit and computer
-    menu()
-    #while True:
-    #    get_data()
-    #    for event in pygame.event.get():
-    #        if event.type == pygame.QUIT:
-    #            pygame.quit()
-    #            sys.exit()
-    #    if type(utils.data[0]) == float and utils.data[0] != 0:
-    #        break
-    game()
-
+    while True:
+        menu()
+        game()
+        utils.ignore_data()

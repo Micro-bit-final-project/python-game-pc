@@ -139,7 +139,7 @@ def shuffle_lists(potions_list, buttons_list):
         buttons_new_list.append(buttons_list[i])
     return potions_new_list, buttons_new_list
 
-def match_game(screen, get_data):
+def match_game(screen, get_data, port):
     """
     This function handles the match minigame.
     - screen: pygame.display to draw to.
@@ -260,8 +260,11 @@ def match_game(screen, get_data):
             pygame.mixer.music.stop()
             if points < 12: # If true, the user lost
                 end_anim(screen, False)
+                utils.minigame_end(screen, False, port)
+            else:
+                utils.minigame_end(screen, True, port)
 
-            utils.minigame_end(screen)
+            
 
             while True:
                 get_data()

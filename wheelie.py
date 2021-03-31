@@ -5,6 +5,7 @@ bgX = 0 # Start of the screen
 
 angle = 0
 angle_opponent = randint(0, 70)
+lose_life = False
 
 def scroll_background(background, screen):
     """

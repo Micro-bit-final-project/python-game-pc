@@ -42,7 +42,7 @@ def end_anim(screen, win):
     pygame.display.flip()
     pygame.time.wait(3000)
 
-def coin_game(screen, get_data):
+def coin_game(screen, get_data, port):
     """
     This function handles the 'coin' minigame.
     - screen: pygame.display to draw to.
@@ -125,8 +125,9 @@ def coin_game(screen, get_data):
             if utils.points - points_counter < 5: # If true, the user lost
                 pygame.mixer.music.stop()
                 end_anim(screen, False)
-
-            utils.minigame_end(screen)
+                utils.minigame_end(screen, False, port)
+            else:
+                utils.minigame_end(screen, True, port)
 
             while True:
                 get_data()

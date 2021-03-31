@@ -4,6 +4,7 @@ import pygame, utils, overcoock_files.meat, overcoock_files.fire, sys, time
 X = 0
 Y = 0
 background = 0
+lose_life = False
 
 def end_anim(screen, points):
     """
@@ -21,6 +22,7 @@ def end_anim(screen, points):
         img = pygame.image.load("overcoock_files" + utils.sep + "ok.png").convert_alpha()
     else:
         img = pygame.image.load("overcoock_files" + utils.sep + "lose.png").convert_alpha()
+        lose_life = True
 
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
@@ -44,7 +46,7 @@ def end_anim(screen, points):
     pygame.display.flip()
     pygame.time.wait(3000)
 
-def overcoock_game(screen, get_data):
+def overcoock_game(screen, get_data, port):
     """
     This function handles the overcoock minigame.
     - screen: pygame.display to draw to.
@@ -136,7 +138,11 @@ def overcoock_game(screen, get_data):
         else:
             pygame.mixer.music.stop()
             end_anim(screen, points)
-            utils.minigame_end(screen)
+            if lose_life == True:
+                utils.minigame_end(screen, False, port)
+            else:
+                utils.minigame_end(screen, True, port)
+            lose_life = False
 
             while True:
                 get_data()

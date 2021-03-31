@@ -15,6 +15,7 @@ win_sound = 0
 lose_sound = 0
 done_setup = False
 stage = 0
+lives = 4
 
 
 def map(x, in_min, in_max, out_min, out_max):
@@ -40,7 +41,9 @@ def check_data_integrity(screen):
 
     - screen: The screen to draw directions on.
     """
-    if data[0] == -1:
+    if type(data) == bool:
+        return
+    elif data[0] == -1:
         screen.fill((0, 0, 0))
         text_colour = (255, 255, 255)
         draw_text(screen, "Controller disconnected", width / 2, height / 2)
@@ -115,12 +118,17 @@ def draw_time(screen, time):
     draw_text(screen, "Time remaining: {}s".format(time), X, Y)
 
 
-def minigame_end(screen):
+def minigame_end(screen, won, port):
     """
     This function is called to display the recap screen
     after each minigame.
     - screen: pygame.display to draw to.
     """
+    global lives
+    if won == False:
+        port.write("L".encode()) # Notify the microbit of the lost life
+        lives -= 1
+
     # Reset time
     time_remaining = 27
 
@@ -132,6 +140,12 @@ def minigame_end(screen):
     X = int(width / 2)
     Y = int(height / 5)
     points_rect.center = (X, Y)
+    # Lives
+    lives_img = font.render("Lives: {}".format(lives), True, (255, 255, 255))
+    lives_rect = lives_img.get_rect()
+    X = int(width / 2)
+    Y = int(height / 1.5)
+    lives_rect.center = (X, Y)
     # Continue
     font = pygame.font.Font("fonts/dpcomic/dpcomic.ttf", 100)
     continue_img = font.render("Press any button to continue", True, (255, 255, 255))
@@ -142,4 +156,12 @@ def minigame_end(screen):
     # Draw
     screen.blit(points_img, points_rect)
     screen.blit(continue_img, continue_rect)
+    screen.blit(lives_img, lives_rect)
     pygame.display.flip()
+
+def ignore_data():
+    """
+    This function sets the values of data to something that will not conflict
+    with the next game instruction. E.g. coming back from a game to the main menu.
+    """
+    utils.data = [9999, 9999, 9999, 9999]
