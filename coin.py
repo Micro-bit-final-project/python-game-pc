@@ -42,7 +42,7 @@ def end_anim(screen, win):
     pygame.display.flip()
     pygame.time.wait(3000)
 
-def coin_game(screen, get_data):
+def coin_game(screen, get_data, decrease_lives):
     """
     This function handles the 'coin' minigame.
     - screen: pygame.display to draw to.
@@ -122,19 +122,11 @@ def coin_game(screen, get_data):
             pygame.display.flip()
             utils.clock.tick(60)
         else:
+            pygame.mixer.music.stop()
             if utils.points - points_counter < 5: # If true, the user lost
-                pygame.mixer.music.stop()
                 end_anim(screen, False)
 
-            utils.minigame_end(screen)
-
-            while True:
-                get_data()
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        pygame.quit()
-                        sys.exit()
-                if type(utils.data[0]) == float and utils.data[0] != 0: # Detect button press on microbit
-                    break
+            decrease_lives()
+            utils.minigame_end(screen, get_data)
             break
     return

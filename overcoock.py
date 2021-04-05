@@ -5,7 +5,7 @@ X = 0
 Y = 0
 background = 0
 
-def end_anim(screen, points):
+def end_anim(screen, points, decrease_lives):
     """
     This function handles the final animation of a game.
     - screen: pygame.display to draw to.
@@ -20,6 +20,7 @@ def end_anim(screen, points):
     elif points == 2:
         img = pygame.image.load("overcoock_files" + utils.sep + "ok.png").convert_alpha()
     else:
+        decrease_lives()
         img = pygame.image.load("overcoock_files" + utils.sep + "lose.png").convert_alpha()
 
     screen.fill((0, 0, 0))
@@ -44,7 +45,7 @@ def end_anim(screen, points):
     pygame.display.flip()
     pygame.time.wait(3000)
 
-def overcoock_game(screen, get_data):
+def overcoock_game(screen, get_data, decrease_lives):
     """
     This function handles the overcoock minigame.
     - screen: pygame.display to draw to.
@@ -135,16 +136,7 @@ def overcoock_game(screen, get_data):
             utils.clock.tick(60)
         else:
             pygame.mixer.music.stop()
-            end_anim(screen, points)
-            utils.minigame_end(screen)
-
-            while True:
-                get_data()
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        pygame.quit()
-                        sys.exit()
-                if type(utils.data[0]) == float and utils.data[0] != 0:
-                    break
+            end_anim(screen, points, decrease_lives)
+            utils.minigame_end(screen, get_data)
             break
     return
