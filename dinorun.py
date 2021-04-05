@@ -109,15 +109,6 @@ def dinorun_game(screen, get_data):
             else:
                 end_anim(screen, True)
 
-            utils.minigame_end(screen)
-
-            while True:
-                get_data()
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        pygame.quit()
-                        sys.exit()
-                if type(utils.data[0]) == float and utils.data[0] != 0:
-                    break
+            utils.minigame_end(screen, get_data)
             break
     return

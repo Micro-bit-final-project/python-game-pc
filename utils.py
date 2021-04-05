@@ -115,7 +115,7 @@ def draw_time(screen, time):
     draw_text(screen, "Time remaining: {}s".format(time), X, Y)
 
 
-def minigame_end(screen):
+def minigame_recap(screen):
     """
     This function is called to display the recap screen
     after each minigame.
@@ -143,3 +143,16 @@ def minigame_end(screen):
     screen.blit(points_img, points_rect)
     screen.blit(continue_img, continue_rect)
     pygame.display.flip()
+
+def minigame_end(screen, get_data):
+    minigame_recap(screen)
+
+    while True:
+        get_data()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+        if type(data[0]) == float and data[0] != 0:
+            break
+    return
