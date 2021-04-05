@@ -125,8 +125,8 @@ def coin_game(screen, get_data, decrease_lives):
             pygame.mixer.music.stop()
             if utils.points - points_counter < 5: # If true, the user lost
                 end_anim(screen, False)
+                decrease_lives()
 
-            decrease_lives()
             utils.minigame_end(screen, get_data)
             break
     return

@@ -92,6 +92,13 @@ def get_data():
 def decrease_lives():
     try:
         utils.lives -= 1
+        port.write("D".encode())
+    except: # Controller disconnected
+        utils.data = [-1, -1, -1, -1]
+
+def reset_lives():
+    try:
+        utils.lives = 8
         port.write("R".encode())
     except: # Controller disconnected
         utils.data = [-1, -1, -1, -1]
@@ -104,7 +111,9 @@ def game():
                 sys.exit()
         utils.time_remaining = 27
         minigame = minigames[randint(0, len(minigames) - 1)]
+        print("LIVES: {}".format(utils.lives))
         minigame(screen, get_data, decrease_lives)
+        print("LIVES: {}".format(utils.lives))
         if (utils.lives == 0):
             decrease_lives()
             utils.lives = 8
@@ -115,6 +124,9 @@ def menu():
     """
     This function handles the game menu.
     """
+    # Reset lives
+    reset_lives()
+
     options = ["Press any button to start the game", "Credits"]
 
     # Create shade surface
