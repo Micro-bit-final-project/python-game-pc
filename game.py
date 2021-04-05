@@ -77,6 +77,11 @@ if run_notice == True:
 port.open()
 
 def get_data():
+    """
+    This function is used to loop the retrieving of data
+    from the microbit. It depends on microbit_serial
+    functions.
+    """
     try:
         if port.in_waiting > 0:
             # Obtain data from the microbit
@@ -90,6 +95,11 @@ def get_data():
         utils.data = [-1, -1, -1, -1]
 
 def decrease_lives():
+    """
+    This function decreases by one the lives variable
+    and sends an instruction to the microbit so that
+    it turns off one LED.
+    """
     try:
         utils.lives -= 1
         port.write("D".encode())
@@ -97,6 +107,11 @@ def decrease_lives():
         utils.data = [-1, -1, -1, -1]
 
 def reset_lives():
+    """
+    This function sends an instruction to the microbit
+    so that all the 8 LEDs light up and it resets
+    the lives variable to 8.
+    """
     try:
         utils.lives = 8
         port.write("R".encode())
@@ -104,6 +119,12 @@ def reset_lives():
         utils.data = [-1, -1, -1, -1]
 
 def game():
+    """
+    This function is used to handle the randomisation of the
+    minigames sequence. It randomises the order, starts a minigame
+    and eventually return back to the main menu if the user loses
+    all the lives.
+    """
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
