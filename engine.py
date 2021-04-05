@@ -44,7 +44,7 @@ def end_anim(screen, win):
     pygame.display.flip()
     pygame.time.wait(3000)
 
-def engine_game(screen, get_data):
+def engine_game(screen, get_data, decrease_lives):
     """
     This function handles the 'wheelie' minigame.
     - screen: pygame.display to draw to.
@@ -140,6 +140,7 @@ def engine_game(screen, get_data):
         else:
             pygame.mixer.music.stop()
             if stage < 5:
+                decrease_lives()
                 end_anim(screen, False)
 
             utils.minigame_end(screen, get_data)

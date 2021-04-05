@@ -17,8 +17,7 @@ import match
 import dinorun
 
 #minigames = [wheelie.wheelie_game, engine.engine_game, coin.coin_game, overcoock.overcoock_game, match.match_game]
-minigames = [engine.engine_game, coin.coin_game, overcoock.overcoock_game, match.match_game]
-
+minigames = [engine.engine_game, coin.coin_game, overcoock.overcoock_game, match.match_game, dinorun.dinorun_game]
 
 # Init pygame
 pygame.init()
@@ -86,9 +85,16 @@ def get_data():
                 utils.data = ubit.data(port)
             print(utils.data)
             port.write("Y".encode()) # Let the microbit know we received the data
+            utils.check_data_integrity(screen)
     except: # Controller disconnected
         utils.data = [-1, -1, -1, -1]
 
+def decrease_lives():
+    try:
+        utils.lives -= 1
+        port.write("R".encode())
+    except: # Controller disconnected
+        utils.data = [-1, -1, -1, -1]
 
 def game():
     while True:
@@ -98,7 +104,11 @@ def game():
                 sys.exit()
         utils.time_remaining = 27
         minigame = minigames[randint(0, len(minigames) - 1)]
-        minigame(screen, get_data)
+        minigame(screen, get_data, decrease_lives)
+        if (utils.lives == 0):
+            decrease_lives()
+            utils.lives = 8
+            break
 
 
 def menu():
@@ -124,7 +134,6 @@ def menu():
 
     while True:
         utils.run_in_thread(get_data)
-        utils.check_data_integrity(screen)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -173,15 +182,8 @@ def menu():
         utils.clock.tick(15)
 
 if __name__ == "__main__":
-    port.write("Y".encode()) # Sync microbit and computer
-    menu()
-    #while True:
-    #    get_data()
-    #    for event in pygame.event.get():
-    #        if event.type == pygame.QUIT:
-    #            pygame.quit()
-    #            sys.exit()
-    #    if type(utils.data[0]) == float and utils.data[0] != 0:
-    #        break
-    game()
+    while True:
+        port.write("Y".encode()) # Sync microbit and computer
+        menu()
+        game()
 

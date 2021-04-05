@@ -41,7 +41,7 @@ def end_anim(screen, win):
     pygame.display.flip()
     pygame.time.wait(3000)
 
-def dinorun_game(screen, get_data):
+def dinorun_game(screen, get_data, decrease_lives):
     """
     This function handles the dinorun minigame.
     - screen: pygame.display to draw to.
@@ -105,6 +105,7 @@ def dinorun_game(screen, get_data):
         else:
             pygame.mixer.music.stop()
             if utils.points - points_counter < 6: # If true, the user lost
+                decrease_lives()
                 end_anim(screen, False)
             else:
                 end_anim(screen, True)

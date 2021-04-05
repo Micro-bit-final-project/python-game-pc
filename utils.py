@@ -15,6 +15,7 @@ win_sound = 0
 lose_sound = 0
 done_setup = False
 stage = 0
+lives = 8
 
 
 def map(x, in_min, in_max, out_min, out_max):
@@ -40,6 +41,9 @@ def check_data_integrity(screen):
 
     - screen: The screen to draw directions on.
     """
+    global data
+    if type(data) == bool or type(data[0]) == bool:
+        data = [0, 0, 0, 0]
     if data[0] == -1:
         screen.fill((0, 0, 0))
         text_colour = (255, 255, 255)
@@ -132,8 +136,13 @@ def minigame_recap(screen):
     X = int(width / 2)
     Y = int(height / 5)
     points_rect.center = (X, Y)
+    # Lives
+    lives_img = font.render("Lives: {}".format(lives), True, (255, 255, 255))
+    lives_rect = lives_img.get_rect()
+    X = int(width / 2)
+    Y = int(height / 2)
+    lives_rect.center = (X, Y)
     # Continue
-    font = pygame.font.Font("fonts/dpcomic/dpcomic.ttf", 100)
     continue_img = font.render("Press any button to continue", True, (255, 255, 255))
     continue_rect = continue_img.get_rect()
     X = int(width / 2)
@@ -141,6 +150,7 @@ def minigame_recap(screen):
     continue_rect.center = (X, Y)
     # Draw
     screen.blit(points_img, points_rect)
+    screen.blit(lives_img, lives_rect)
     screen.blit(continue_img, continue_rect)
     pygame.display.flip()
 
