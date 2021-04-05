@@ -155,6 +155,14 @@ def minigame_recap(screen):
     pygame.display.flip()
 
 def minigame_end(screen, get_data):
+    """
+    This function is used to handle the break after a minigame.
+    It calls minigame_recap to display infromation and then wait for
+    input from the user to return.
+    - screen: pygame.display to draw to.
+    - get_data: get_data function to retrieve data
+                from the microbit.
+    """
     minigame_recap(screen)
 
     while True:
