@@ -112,8 +112,8 @@ def engine_game(screen, get_data, decrease_lives):
             # scale of 0 to 100.
             # If the engine is not spinning, the pin is floating
             # due to the diode protection. Might need adjustement.
-            blow = utils.map(utils.data[3], 7, 1023, 0, 100)
-            if blow > 90:
+            blow = utils.map(utils.data[3], 80, 560, 0, 100)
+            if blow > 70:
                 blow_points += 0.02
 
             if int(blow_points) > int(old_blow_points):
