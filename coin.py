@@ -118,6 +118,7 @@ def coin_game(screen, get_data, decrease_lives):
             utils.draw_text(screen, "R and L buttons to move", utils.width / 2, 222)
             utils.draw_points(screen)
             utils.draw_time(screen, utils.time_remaining)
+            utils.run_in_thread(utils.draw_volume(screen))
 
             pygame.display.flip()
             utils.clock.tick(60)

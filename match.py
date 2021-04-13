@@ -253,6 +253,7 @@ def match_game(screen, get_data, decrease_lives):
             #utils.draw_text(screen, "Directions", utils.width / 2, 322)
             utils.draw_points(screen)
             utils.draw_time(screen, utils.time_remaining)
+            utils.run_in_thread(utils.draw_volume(screen))
 
             pygame.display.flip()
             utils.clock.tick(60)

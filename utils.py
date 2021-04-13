@@ -118,6 +118,12 @@ def draw_time(screen, time):
     Y = 50
     draw_text(screen, "Time remaining: {}s".format(time), X, Y)
 
+def draw_volume(screen):
+    global volume
+    X = 280
+    Y = 150
+    draw_text(screen, "Volume: {}%".format(int(volume * 100)), X, Y)
+
 
 def minigame_recap(screen):
     """
