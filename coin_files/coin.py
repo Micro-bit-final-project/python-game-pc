@@ -56,7 +56,7 @@ class Coin(pygame.sprite.Sprite):
         self.Y += 3.5
         self.rect = self.image.get_rect(center=(self.X, self.Y))
         if self.rect.colliderect(self.bucket_rect) == True:
-            pygame.mixer.Sound.play(self.coin_sound)
+            pygame.mixer.Sound.play(self.coin_sound).set_volume(utils.volume)
             self.Y = -320 / 2 # 320 is the sprite's height
             self.X = randint(50, utils.width - 50)
             utils.points += 1

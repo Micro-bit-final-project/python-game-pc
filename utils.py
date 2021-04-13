@@ -16,7 +16,7 @@ lose_sound = 0
 done_setup = False
 stage = 0
 lives = 8
-
+volume = 1
 
 def map(x, in_min, in_max, out_min, out_max):
     """
@@ -174,3 +174,9 @@ def minigame_end(screen, get_data):
         if type(data[0]) == float and data[0] != 0:
             break
     return
+
+def update_volume():
+    global volume
+    volume = map(data[2], 0, 1023, 0, 1)
+    print("Volume: {}".format(volume))
+    pygame.mixer.music.set_volume(volume)

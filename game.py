@@ -91,6 +91,10 @@ def get_data():
             print(utils.data)
             port.write("Y".encode()) # Let the microbit know we received the data
             utils.check_data_integrity(screen)
+            try:
+                utils.update_volume()
+            except Exception as e:
+                print(e)
     except: # Controller disconnected
         utils.data = [-1, -1, -1, -1]
 
@@ -132,9 +136,7 @@ def game():
                 sys.exit()
         utils.time_remaining = 27
         minigame = minigames[randint(0, len(minigames) - 1)]
-        print("LIVES: {}".format(utils.lives))
         minigame(screen, get_data, decrease_lives)
-        print("LIVES: {}".format(utils.lives))
         if (utils.lives == 0):
             decrease_lives()
             utils.lives = 8

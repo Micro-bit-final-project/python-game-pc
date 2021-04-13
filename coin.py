@@ -31,9 +31,9 @@ def end_anim(screen, win):
 
     # Sound
     if win:
-        pygame.mixer.Sound.play(utils.win_sound)
+        pygame.mixer.Sound.play(utils.win_sound).set_volume(utils.volume)
     else:
-        pygame.mixer.Sound.play(utils.lose_sound)
+        pygame.mixer.Sound.play(utils.lose_sound).set_volume(utils.volume)
 
     # Info
     utils.draw_points(screen)
