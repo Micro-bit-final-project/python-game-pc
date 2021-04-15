@@ -142,6 +142,37 @@ def game():
             utils.lives = 8
             break
 
+def credits():
+    """
+    This function handles the credits display.
+    """
+    credit_lines = []
+    credit_objects = []
+    utils.text_size = 20
+    creditX = 250
+    creditY = 0
+    screen.fill((255, 255, 255))
+    utils.text_colour = (0, 0, 0)
+
+    with open("credits.txt") as f:
+        # Strip \n from each line and store in a list
+        credit_lines = [line.rstrip() for line in f]
+
+    for line in range(0, len(credit_lines)):
+        # Create all the text objects
+        credit_objects.append(utils.draw_text(screen, credit_lines[line], utils.width / 2, utils.height + (50 * line)))
+   
+    while credit_objects[len(credit_lines) - 1][1].y > 0:
+        # This loop scrolls the text up utiil the last line is outside of the screen
+        screen.fill((255, 255, 255))
+        utils.text_colour = (0, 0, 0)
+        for line in range(0, len(credit_lines)):
+            credit_objects[line][1].y -= 5
+            if credit_objects[line][1].y > 0:
+                screen.blit(credit_objects[line][0], credit_objects[line][1])
+        pygame.display.flip()
+        utils.clock.tick(25)
+    utils.text_size = 100
 
 def menu():
     """
@@ -182,7 +213,12 @@ def menu():
         elif utils.data[0] == 2 or utils.data[0] == 4:
             utils.run_in_thread(get_data)
             utils.data[0] = 0 # Clean to avoid interferance with games
-            break # TODO: Implement credits screen
+            if selected_option == 0:
+                game()
+                return
+            else:
+                credits()
+                return
         print(utils.data)
         screen.fill((0, 0, 0))
         # Shade alpha
@@ -220,5 +256,4 @@ if __name__ == "__main__":
     while True:
         port.write("Y".encode()) # Sync microbit and computer
         menu()
-        game()
 

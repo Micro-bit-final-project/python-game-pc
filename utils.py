@@ -17,6 +17,7 @@ done_setup = False
 stage = 0
 lives = 8
 volume = 1
+text_size = 100
 
 def map(x, in_min, in_max, out_min, out_max):
     """
@@ -75,11 +76,12 @@ def draw_text(screen, text, X, Y):
     - X: x coordinate of the center of the text.
     - Y: y coordinate of the center of the text.
     """
-    font = pygame.font.Font("fonts/dpcomic/dpcomic.ttf", 100)
+    font = pygame.font.Font("fonts/dpcomic/dpcomic.ttf", text_size)
     text_img = font.render(text, True, text_colour)
     text_rect = text_img.get_rect()
     text_rect.center = (X, Y)
     screen.blit(text_img, text_rect)
+    return [text_img, text_rect]
 
 
 def draw_number_counter(screen, number):
