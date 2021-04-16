@@ -230,7 +230,7 @@ def match_game(screen, get_data, decrease_lives):
                 utils.points += 1
                 counter = 0
                 utils.text_colour = (9, 140, 0)
-                utils.draw_text(screen, "Rigth!", X / 2, Y / 2)
+                utils.draw_text(screen, "Right!", X / 2, Y / 2)
                 pygame.display.flip()
                 pygame.time.wait(1200)
                 utils.text_colour = colour
