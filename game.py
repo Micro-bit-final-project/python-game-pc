@@ -149,10 +149,8 @@ def credits():
     credit_lines = []
     credit_objects = []
     utils.text_size = 20
-    creditX = 250
-    creditY = 0
-    screen.fill((255, 255, 255))
-    utils.text_colour = (0, 0, 0)
+    utils.text_colour = (255, 255, 255)
+    
 
     with open("credits.txt") as f:
         # Strip \n from each line and store in a list
@@ -163,9 +161,13 @@ def credits():
         credit_objects.append(utils.draw_text(screen, credit_lines[line], utils.width / 2, utils.height + (50 * line)))
    
     while credit_objects[len(credit_lines) - 1][1].y > 0:
-        # This loop scrolls the text up utiil the last line is outside of the screen
-        screen.fill((255, 255, 255))
-        utils.text_colour = (0, 0, 0)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        # This loop scrolls the text up util the last line is outside of the screen
+        screen.fill((0, 0, 0))
         for line in range(0, len(credit_lines)):
             credit_objects[line][1].y -= 5
             if credit_objects[line][1].y > 0:
@@ -181,7 +183,7 @@ def menu():
     # Reset lives
     reset_lives()
 
-    options = ["Press any button to start the game", "Credits"]
+    options = ["Play", "Credits"]
 
     # Create shade surface
     shade = pygame.Surface((utils.width, utils.height))
@@ -249,6 +251,13 @@ def menu():
             utils.draw_text(screen, options[o], utils.width / 2 - 5, (utils.height / 2) - 5 + 150 * o)
             utils.text_colour = (255, 255, 255)
             utils.draw_text(screen, options[o], utils.width / 2, (utils.height / 2) + 150 * o)
+        # Draw help
+        utils.text_colour = (0, 0, 0)
+        utils.draw_text(screen, "U/D to select", (utils.width / 2) - 5, (utils.height / 5) - 5)
+        utils.draw_text(screen, "L/R to accept", (utils.width / 2) - 5, (utils.height / 3) - 5)
+        utils.text_colour = (255, 255, 255)
+        utils.draw_text(screen, "U/D to select", utils.width / 2, utils.height / 5)
+        utils.draw_text(screen, "L/R to accept", utils.width / 2, utils.height / 3)
         pygame.display.flip()
         utils.clock.tick(15)
 
