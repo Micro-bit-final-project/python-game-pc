@@ -99,9 +99,9 @@ def coin_game(screen, get_data, decrease_lives):
             screen.fill((0, 0, 0))
 
             # Check what button has been pressed
-            if utils.data[0] == 2: # Left
+            if utils.data[0] == 2 and X > 0: # Left
                 X -= 5
-            elif utils.data[0] == 4: # Right
+            elif utils.data[0] == 4 and X < utils.width: # Right
                 X += 5
 
             
