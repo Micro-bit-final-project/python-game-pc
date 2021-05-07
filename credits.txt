@@ -3,7 +3,8 @@ Setup checkmark - https://www.kenney.nl/assets/game-icons
 Win sound - https://opengameart.org/users/fupi
 Lose sound - https://opengameart.org/users/little-robot-sound-factory
 Bike sprites (Wheelie minigame) - https://opengameart.org/users/chasersgaming
-Wheelie minigame background - https://opengameart.org/users/bevouliincom / http://bevouliin.com
+Wheelie minigame background (Slightly modified) - https://opengameart.org/users/ansimuz
+Wheelie minigame background music - https://opengameart.org/users/snabisch
 Car sprite (Engine minigame) - https://opengameart.org/users/chasersgaming
 Engine minigame background - https://opengameart.org/users/ansimuz
 Engine minigame smoke - https://opengameart.org/users/knoblepersona
@@ -23,3 +24,4 @@ Match minigame background music - https://opengameart.org/users/snabisch
 DinoRun minigame background - https://opengameart.org/users/mobile-game-graphics
 DinoRun minigame dinosaur - https://opengameart.org/users/pixelartm
 DinoRun minigame wizards - https://opengameart.org/users/mobile-game-graphics
+DinoRun minigame background music - https://opengameart.org/users/snabisch

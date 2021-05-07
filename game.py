@@ -16,8 +16,7 @@ import overcoock
 import match
 import dinorun
 
-#minigames = [wheelie.wheelie_game, engine.engine_game, coin.coin_game, overcoock.overcoock_game, match.match_game]
-minigames = [engine.engine_game, coin.coin_game, overcoock.overcoock_game, match.match_game, dinorun.dinorun_game]
+minigames = [wheelie.wheelie_game, engine.engine_game, coin.coin_game, overcoock.overcoock_game, match.match_game]
 
 # Init pygame
 pygame.init()

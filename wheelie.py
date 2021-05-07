@@ -5,6 +5,7 @@ bgX = 0 # Start of the screen
 
 angle = 0
 angle_opponent = randint(0, 70)
+background = 0
 
 def scroll_background(background, screen):
     """
@@ -26,7 +27,43 @@ def scroll_background(background, screen):
     bgX -= 5
 
 
-def wheelie_game(screen, get_data):
+def end_anim(screen, win):
+    """
+    This function handles the final animation of the wheelie minigame.
+    - screen: pygame.display to draw to.
+    - win: Whether or not the user won. Play a sound and
+           display an image accordingly.
+    """
+    global X
+    global Y
+    global background
+
+    if win:
+        img = pygame.image.load("wheelie_files" + utils.sep + "win.png").convert_alpha()
+    else:
+        img = pygame.image.load("wheelie_files" + utils.sep + "lose.png").convert_alpha()
+
+    screen.fill((0, 0, 0))
+    screen.blit(background, (0, 0))
+    img_rect = img.get_rect()
+    img_rect.center = (utils.width / 2, utils.height/2)
+    screen.blit(img, img_rect)
+
+    # Sound
+    if win:
+        pygame.mixer.Sound.play(utils.win_sound).set_volume(utils.volume)
+    else:
+        pygame.mixer.Sound.play(utils.lose_sound).set_volume(utils.volume)
+
+    # Info
+    utils.draw_points(screen)
+    utils.draw_time(screen, utils.time_remaining)
+
+    pygame.display.flip()
+    pygame.time.wait(3000)
+
+
+def wheelie_game(screen, get_data, decrease_lives):
     """
     This function handles the 'wheelie' minigame.
     - screen: pygame screen.
@@ -35,13 +72,18 @@ def wheelie_game(screen, get_data):
     """
     global angle
     global angle_opponent
+    global background
+
+    # Initialise points variable
+    points_counter = utils.points
 
     # Init bike sprite
     X = 350
-    Y = 805 - (372 / 2) # 372 is the sprite's height
+    Y = (utils.height - 15) - (372 / 2) # 372 is the sprite's height, 20 is the floor's height
     bike = wheelie_files.bike.Bike(X, Y, False)
     bike_sprites = pygame.sprite.Group()
     bike_sprites.add(bike)
+    angle = 0
 
     # Init opponent bike sprite
     X = 950
@@ -53,6 +95,8 @@ def wheelie_game(screen, get_data):
     background = pygame.image.load("wheelie_files" + utils.sep + "background.png").convert_alpha()
 
     # Game
+    pygame.mixer.music.load("wheelie_files" + utils.sep + "music.ogg")
+    pygame.mixer.music.play(1) # Do not loop the song, play it once. -1 to play in a loop if you ever need it.
     seconds_counter = time.time()
     mathcing_time_remaining = 3
     utils.text_colour = (255, 0, 0)
@@ -65,7 +109,7 @@ def wheelie_game(screen, get_data):
             if mathcing_time_remaining == 0:
                 mathcing_time_remaining = 3
 
-                if abs(angle - angle_opponent) <= 9:
+                if abs(angle - angle_opponent) <= 15:
                     utils.points += 1
 
                 angle_opponent = randint(0, 70)
@@ -84,14 +128,11 @@ def wheelie_game(screen, get_data):
             # Backgound
             scroll_background(background, screen)
 
-            # Info
-            utils.draw_number_counter(screen, mathcing_time_remaining)
-            utils.draw_points(screen)
-            utils.draw_time(screen, utils.time_remaining)
-
-            # Map the data coming from the microbit to a
-            # scale of 0 to 60.
-            angle = utils.map(utils.data[2], 2, 1023, 0, 70)
+            # Check what button has been pressed
+            if utils.data[0] == 3 and angle > 0: # Down
+                angle -= 0.5
+            elif utils.data[0] == 1 and angle < 70: # Up
+                angle += 0.5
 
             bike_sprites.draw(screen)
             opponent_sprites.draw(screen)
@@ -101,10 +142,25 @@ def wheelie_game(screen, get_data):
             bike_sprites.update()
             opponent_sprites.update()
 
+            # Info
+            utils.draw_text(screen, "U/D to wheelie", utils.width / 2, 322)
+            utils.draw_points(screen)
+            utils.draw_time(screen, utils.time_remaining)
+            utils.draw_number_counter(screen, mathcing_time_remaining)
+            utils.run_in_thread(utils.draw_volume(screen))
+
             pygame.display.flip()
             utils.clock.tick(60)
         else:
-            utils.minigame_end(screen)
+            pygame.mixer.music.stop()
+            if utils.points - points_counter < 3:
+                # If true, the user lost.
+                decrease_lives()
+                end_anim(screen, False)
+            else:
+                end_anim(screen, True)
+            
+            utils.minigame_end(screen, get_data)
 
             while True:
                 get_data()
