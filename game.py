@@ -15,8 +15,9 @@ import coin
 import overcoock
 import match
 import dinorun
+import whichpath
 
-minigames = [wheelie.wheelie_game, engine.engine_game, coin.coin_game, overcoock.overcoock_game, match.match_game]
+minigames = [wheelie.wheelie_game, engine.engine_game, coin.coin_game, overcoock.overcoock_game, match.match_game, whichpath.whichpath_game]
 
 # Init pygame
 pygame.init()

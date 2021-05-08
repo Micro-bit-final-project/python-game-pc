@@ -25,3 +25,6 @@ DinoRun minigame background - https://opengameart.org/users/mobile-game-graphics
 DinoRun minigame dinosaur - https://opengameart.org/users/pixelartm
 DinoRun minigame wizards - https://opengameart.org/users/mobile-game-graphics
 DinoRun minigame background music - https://opengameart.org/users/snabisch
+WhichPath minigame music - https://opengameart.org/users/horrorpen
+WhichPath minigame background - https://opengameart.org/users/davesch
+WhichPath minigame character - https://opengameart.org/users/hannemann
