@@ -19,6 +19,10 @@ import whichpath
 
 minigames = [wheelie.wheelie_game, engine.engine_game, coin.coin_game, overcoock.overcoock_game, match.match_game, whichpath.whichpath_game]
 
+# Demo flag
+demo = False
+counter = 0
+
 # Init pygame
 pygame.init()
 clock = pygame.time.Clock()
@@ -129,13 +133,25 @@ def game():
     and eventually return back to the main menu if the user loses
     all the lives.
     """
+    global demo
+    global counter
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
         utils.time_remaining = 27
-        minigame = minigames[randint(0, len(minigames) - 1)]
+        if demo == True:
+            if counter == 6: # Reset counter
+                counter = 0
+
+            minigame = minigames[counter]
+            counter += 1
+            if counter == 4: # Skip match minigame for ghost button clicks issue
+                counter += 1
+        else:
+            minigame = minigames[randint(0, len(minigames) - 1)]
+
         minigame(screen, get_data, decrease_lives)
         if (utils.lives == 0):
             decrease_lives()
